@@ -5,7 +5,7 @@ declare type SearchParamProps = {
     searchParams: { [key: string]: string | string[] | undefined };
   };
   
-  declare type Gender = "Male" | "Female" | "Other";
+  declare type Gender = "male" | "female" | "other";
   declare type Status = "pending" | "scheduled" | "cancelled";
   
   declare interface CreateUserParams {
@@ -34,8 +34,7 @@ declare type SearchParamProps = {
     pastMedicalHistory: string | undefined;
     identificationType: string | undefined;
     identificationNumber: string | undefined;
-    identificationDocumentId: FormData | undefined;
-    identificationDocumentUrl: FormData | undefined;
+    identificationDocument: FormData | undefined;
     privacyConsent: boolean;
   }
   
