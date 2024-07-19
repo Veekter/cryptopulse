@@ -11,7 +11,7 @@ type FileUploaderProps = {
 
 }
 
-export const FileUploader = ({ files, onChange}: FileUploaderProps) => {
+const FileUploader = ({ files, onChange}: FileUploaderProps) => {
   const onDrop = useCallback( (acceptedFiles: File[]) => {
     // Do something with the files
     onChange(acceptedFiles)

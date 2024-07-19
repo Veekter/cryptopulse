@@ -32,7 +32,7 @@ interface CustomProps {
     fieldType: FormFieldType,
     name: string,
     label?: string,
-    placeholder: string,
+    placeholder?: string,
     iconSrc?: string,
     iconAlt?: string,
     disabled?: boolean,
@@ -68,7 +68,7 @@ const RenderField = ( { field, props }: {field: any; props: CustomProps }) => {
                     </FormControl>
                 </div>
             )
-        
+            
         case FormFieldType.TEXTAREA:
             return (
                 <FormControl>
@@ -168,9 +168,9 @@ const CustomFormField = ( props: CustomProps ) => {
    const { control, fieldType, name, label} = props 
   return (
     <FormField
-    control={control}
-    name={name}
-    render={({ field }) => (
+        control={control}
+        name={name}
+        render={({ field }) => (
       <FormItem className='flex-1'>
         {fieldType !== FormFieldType.CHECKBOX && label && (
             <FormLabel >{label}</FormLabel>
