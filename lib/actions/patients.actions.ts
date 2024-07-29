@@ -2,7 +2,7 @@
 
 import { ID, Query } from "node-appwrite"
 import { BUCKET_ID, DATABASE_ID, databases, ENDPOINT, PATIENTS_COLLECTION_ID, PROJECT_ID, storage, users } from "../appwrite.config"
-import { parseStringify } from "../utils"
+import { encryptData, parseStringify } from "../utils"
 
 import { InputFile } from "node-appwrite/file"
 
@@ -53,6 +53,7 @@ export const getPatient = async (userId: string) => {
     }
 }
 
+
 export const registerPatient = async ({ identificationDocument, ...patient }: RegisterUserParams ) => {
     try {
         let file;
@@ -66,6 +67,54 @@ export const registerPatient = async ({ identificationDocument, ...patient }: Re
             file  = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile)
         }
 
+        let patientData = {
+            userId: patient.userId,
+            name: patient.name,
+            email: patient.email,
+            phone: patient.phone,
+            birthDate: patient.birthDate,
+            gender: patient.birthDate,
+            address: patient.address,
+            occupation: patient.occupation,
+            emergencyContactName: patient.emergencyContactName,
+            emergencyContractNumber: patient.emergencyContactNumber,
+            primaryPhysician: patient.primaryPhysician,
+            insuranceProvider: patient.insuranceProvider,
+            insurancePolicyNumber: patient.insurancePolicyNumber,
+            allergies: patient.allergies,
+            currentMedication: patient.currentMedication,
+            familyMedicalHistory: patient.familyMedicalHistory,
+            pastMedicalHistory: patient.pastMedicalHistory,
+            identificationType: patient.identificationType,
+            identificationNumber: patient.identificationNumber,
+            privacyConsent: patient.privacyConsent
+        }
+
+        let encryptedPatientData = {
+            userId: patient.userId,
+            name: patient.name,
+            email: patient.email,
+            phone: encryptData(patient.phone),
+            birthDate: patient.birthDate,
+            gender: patient.gender,
+            address: encryptData(patient.address),
+            occupation: patient.occupation,
+            emergencyContactName: encryptData(patient.emergencyContactName),
+            emergencyContactNumber: encryptData(patient.emergencyContactNumber),
+            primaryPhysician: patient.primaryPhysician,
+            insuranceProvider: encryptData(patient.insuranceProvider),
+            insurancePolicyNumber: encryptData(patient.insurancePolicyNumber),
+            allergies: encryptData(patient.allergies),
+            currentMedication: encryptData(patient.currentMedication),
+            familyMedicalHistory: encryptData(patient.familyMedicalHistory),
+            pastMedicalHistory: encryptData(patient.pastMedicalHistory),
+            identificationType: encryptData(patient.identificationType),
+            identificationNumber: encryptData(patient.identificationNumber),
+            privacyConsent: patient.privacyConsent
+        }
+
+        
+
         const newpatient = await databases.createDocument(
             DATABASE_ID!,
             PATIENTS_COLLECTION_ID!,
@@ -73,9 +122,11 @@ export const registerPatient = async ({ identificationDocument, ...patient }: Re
             {
                 identificationDocumentId: file?.$id || null,
                 identificationDocumentUrl: `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file?.$id}/view?project=${PROJECT_ID}`,
-                ...patient
+                ...encryptedPatientData
             }
         )
+
+        console.log({encryptedPatientData})
 
         return parseStringify(newpatient);  
 
