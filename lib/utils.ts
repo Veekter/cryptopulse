@@ -1,5 +1,11 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
+
+// AES constants
+const algorithm = 'aes-256-cbc'
+const key = randomBytes(32)
+const iv = randomBytes(16)
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -74,4 +80,19 @@ export function encryptKey(passkey: string) {
 
 export function decryptKey(passkey: string) {
   return atob(passkey);
+}
+
+export function encryptData(data: any) {
+  let toEncrypt = String(data);
+  let cipher = createCipheriv(algorithm, key, iv)
+  let encryptData = cipher.update(toEncrypt, 'utf8', 'hex')
+  encryptData += cipher.final('hex')
+  return encryptData
+}
+
+export function decryptData(cipherText: string) {
+  const  decipher = createDecipheriv(algorithm, key, iv);
+  let decryptedData = decipher.update(cipherText, 'hex', 'utf8');
+  decryptedData += decipher.final('utf8');
+  return decryptedData
 }
