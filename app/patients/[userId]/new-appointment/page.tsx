@@ -14,7 +14,7 @@ export default async function NewAppointment({ params: { userId}}: SearchParamPr
       <section className="remove-scollbar container my-auto">
         <div className="sub-container max-w-[860px] flex-1 justify-between">
           <Image 
-            src="/assets/icons/logo-full.svg"
+            src="/assets/icons/trans-logo.svg"
             height={1000}
             width={1000}
             alt="patient"
