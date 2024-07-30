@@ -15,7 +15,7 @@ export default function Home({ searchParams }: SearchParamProps) {
       <section className="remove-scollbar container my-auto">
         <div className="sub-container max-w-[496px]">
           <Image 
-            src="/assets/icons/logo-full.svg"
+            src="/assets/icons/trans-logo.svg"
             height={1000}
             width={1000}
             alt="patient"
